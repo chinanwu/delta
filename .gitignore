@@ -59,3 +59,13 @@ typings/
 
 # next.js build output
 .next
+
+/dist/
+/build
+.idea/
+.idea/*
+
+.DS_Store
+.cache
+.project
+*.iml

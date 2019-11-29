@@ -1,0 +1,50 @@
+@import '../style/styles';
+
+.Home {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.HomeHeader {
+	font-size: 64px;
+	margin-bottom: 32px;
+}
+
+.HomeGame {
+	display: flex;
+	margin-bottom: 32px;
+}
+
+.HomeInput {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	font-size: 26px;
+	margin-right: 12px;
+	text-align: center;
+}
+
+.HomeBtn {
+	background-color: @greenBtn;
+	border: none;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	font-size: 26px;
+	box-shadow: @box-shadow-01;
+}
+
+.HomeBtn:hover {
+	background-color: @greenBtnHover;
+	box-shadow: @box-shadow-02;
+}
+
+.HomeBtn:active {
+	background-color: @greenBtnActive;
+}
+
+.HomeFooter {
+	position: absolute;
+	bottom: 0;
+}
