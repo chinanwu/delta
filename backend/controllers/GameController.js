@@ -4,6 +4,21 @@ const path = require('path');
 
 const getRandom = max => Math.floor(Math.random() * (+max - +0)) + +0;
 
+const getGames = (req, res) =>
+	Game.find((err, data) => {
+		if (err) return res.json({ success: false, error: err });
+		return res.json({ success: true, data: data });
+	});
+
+const getGame = (req, res) =>
+	Game.find({ url: req.params.url }, (err, data) =>
+		err
+			? res.json({ success: false, error: err })
+			: data.length === 0
+			? res.json({ success: false, error: 'No Game Found' })
+			: res.json({ success: true, data: data })
+	);
+
 const createGame = (req, res) => {
 	const game = new Game();
 
@@ -24,6 +39,7 @@ const createGame = (req, res) => {
 					return res.status(201).json({
 						success: true,
 						id: game._id,
+						url: game.url,
 						message: 'Game created!',
 					});
 				})
@@ -38,5 +54,7 @@ const createGame = (req, res) => {
 };
 
 module.exports = {
+	getGames,
+	getGame,
 	createGame,
 };

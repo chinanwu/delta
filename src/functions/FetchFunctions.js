@@ -1,10 +1,12 @@
-export const getFetch = url => methodFetch(url, {}, 'GET');
+export const getFetch = url =>
+	fetch(url)
+		.then(res => res.json())
+		.then(res => res)
+		.catch(err => err);
 
-export const postFetch = (url, body) => methodFetch(url, body, 'POST');
-
-const methodFetch = (url, body, method) =>
+export const postFetch = (url, body) =>
 	fetch(url, {
-		method: method,
+		method: 'POST',
 		body: body,
 		headers: { 'Content-Type': 'application/json' },
 	})
