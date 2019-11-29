@@ -1,11 +1,11 @@
 {
-  "name": "mairead",
+  "name": "maireadV2",
   "version": "0.0.1",
-  "description": "Testing",
+  "description": "Mairead Word Game",
   "main": "index.jsx",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chinanwu/mairead"
+    "url": "https://github.com/chinanwu/maireadV2"
   },
   "scripts": {
     "start": "webpack-dev-server --mode development",
