@@ -4,7 +4,11 @@ import { getFetch, postFetch } from '../functions/FetchFunctions';
 
 import './Game.less';
 
-export const Game = ({ match: { params: gameUrl } }) => {
+export const Game = ({
+	match: {
+		params: { gameUrl },
+	},
+}) => {
 	const [from, setFrom] = useState(
 		sessionStorage.getItem(gameUrl + '-from') || null
 	);
@@ -13,28 +17,26 @@ export const Game = ({ match: { params: gameUrl } }) => {
 	const [text, setText] = useState('');
 
 	useEffect(() => {
-		if (from === null || to === null) {
-			getFetch('http://localhost:5000/api/games/' + gameUrl).then(res => {
-				if (!res.success) {
-					postFetch(
-						'http://localhost:5000/api/games/create',
-						JSON.stringify({ url: gameUrl })
-					).then(res => {
-						console.log('Game created in Game page, setting data');
-						setFrom(res.data.from);
-						sessionStorage.setItem(gameUrl + '-from', res.data.from);
-						setTo(res.data.to);
-						sessionStorage.setItem(gameUrl + '-to', res.data.to);
-					});
-				} else {
-					console.log('Game exists, setting data');
+		getFetch('http://localhost:5000/api/games/' + gameUrl).then(res => {
+			if (!res.success) {
+				postFetch(
+					'http://localhost:5000/api/games/create',
+					JSON.stringify({ url: gameUrl })
+				).then(res => {
+					console.log('Game created in Game page, setting data');
 					setFrom(res.data.from);
 					sessionStorage.setItem(gameUrl + '-from', res.data.from);
 					setTo(res.data.to);
 					sessionStorage.setItem(gameUrl + '-to', res.data.to);
-				}
-			});
-		}
+				});
+			} else {
+				console.log('Game exists, setting data');
+				setFrom(res.data.from);
+				sessionStorage.setItem(gameUrl + '-from', res.data.from);
+				setTo(res.data.to);
+				sessionStorage.setItem(gameUrl + '-to', res.data.to);
+			}
+		});
 	}, []);
 
 	return (
