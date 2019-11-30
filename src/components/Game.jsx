@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { getFetch, postFetch } from '../functions/FetchFunctions';
 import hasValidCharacters from '../functions/hasValidCharacters';
@@ -60,21 +61,7 @@ export const Game = ({
 		event => {
 			if (event && event.target && event.keyCode) {
 				if (event.keyCode === 13 || event.keyCode === 32) {
-					getFetch(
-						'http://localhost:5000/api/words/validate?word=' + text
-					).then(res => {
-						res
-							? text.length === 4 && error === null
-								? setEntries(entries => {
-										if (entries === []) {
-											return [text];
-										} else {
-											return [...entries, text];
-										}
-								  })
-								: null
-							: setError('Invalid word');
-					});
+					handleClick();
 				}
 			}
 		},
@@ -86,13 +73,15 @@ export const Game = ({
 			res => {
 				res
 					? text.length === 4 && error === null
-						? setEntries(entries => {
+						? (setEntries(entries => {
 								if (entries === []) {
 									return [text];
 								} else {
 									return [...entries, text];
 								}
-						  })
+						  }),
+						  setText(''),
+						  setError(null))
 						: null
 					: setError('Invalid word');
 			}
@@ -141,8 +130,8 @@ export const Game = ({
 	);
 };
 
-export default Game;
+Game.propTypes = {
+	match: PropTypes.object,
+};
 
-// TODO
-// Not allow dupes in entries
-// Enforce 4 letters in entry
+export default Game;

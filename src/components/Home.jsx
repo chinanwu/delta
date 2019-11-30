@@ -3,11 +3,11 @@ import { Redirect } from 'react-router-dom';
 
 import { postFetch } from '../functions/FetchFunctions';
 import generateGameUrl from '../functions/generateGameUrl';
-import isWord from '../functions/hasValidCharacters';
+import hasValidCharacters from '../functions/hasValidCharacters';
 
 import './Home.less';
 
-export const Home = ({}) => {
+export const Home = () => {
 	const [gameUrl, setGameUrl] = useState(generateGameUrl);
 	const [error, setError] = useState(null);
 	const [redirect, setRedirect] = useState(false);
@@ -17,9 +17,9 @@ export const Home = ({}) => {
 			if (event.target.value) {
 				const url = event.target.value;
 				setGameUrl(url);
-				!isWord(url)
-					? setError('Game URL must only contain letters')
-					: setError(null);
+				hasValidCharacters(url)
+					? setError(null)
+					: setError('Game URL must only contain letters');
 			} else {
 				setGameUrl('');
 				setError('Game URL cannot be empty');
@@ -45,6 +45,11 @@ export const Home = ({}) => {
 		<Redirect to={'/game/' + gameUrl} />
 	) : (
 		<div className="Home">
+			<div className="Home__nav">
+				<a className="Home__about" href="/about">
+					About
+				</a>
+			</div>
 			<div className="Home__header">Mairead</div>
 			<div>
 				<div className="Home__game">
