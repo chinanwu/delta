@@ -15,7 +15,7 @@
 
 .HomeGame {
 	display: flex;
-	margin-bottom: 32px;
+	margin-bottom: 12px;
 }
 
 .HomeInput {
@@ -24,6 +24,12 @@
 	font-size: 26px;
 	margin-right: 12px;
 	text-align: center;
+	box-shadow: @box-shadow-01;
+	border: 1px solid black;
+}
+
+.HomeInput--error {
+	border: 2px solid @errorRed;
 }
 
 .HomeBtn {
@@ -42,6 +48,23 @@
 
 .HomeBtn:active {
 	background-color: @greenBtnActive;
+}
+
+.HomeBtn--error {
+	background-color: @disabledBtn;
+	cursor: not-allowed;
+}
+
+.HomeBtn--error:hover {
+	background-color: @disabledBtn;
+}
+
+.HomeBtn--error:active {
+	background-color: @disabledBtn;
+}
+
+.HomeError {
+	position: absolute;
 }
 
 .HomeFooter {

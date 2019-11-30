@@ -10,33 +10,36 @@ const REGEX = /^[a-z]+$/i;
 
 export const Home = ({}) => {
 	const [gameUrl, setGameUrl] = useState(generateGameUrl);
+	const [error, setError] = useState(null);
 	const [redirect, setRedirect] = useState(false);
 
 	const handleChange = useCallback(event => {
 		if (event && event.target) {
 			if (event.target.value) {
 				const url = event.target.value;
-				if (REGEX.test(url)) {
-					setGameUrl(url);
-				}
+				setGameUrl(url);
+				!REGEX.test(url)
+					? setError('Game URL must only contain letters')
+					: setError(null);
 			} else {
 				setGameUrl('');
+				setError('Game URL cannot be empty');
 			}
 		}
 	}, []);
 
 	const handleCreateClick = useCallback(() => {
-		if (gameUrl !== '') {
+		if (!error) {
 			postFetch(
 				'http://localhost:5000/api/games/create',
 				JSON.stringify({ url: gameUrl })
 			).then(res => {
-				console.log(res.success);
+				console.log('Creating game: ' + res.success);
 				if (res.success) {
 					setRedirect(true);
 				}
 			});
-		} // TODO present error
+		}
 	}, []);
 
 	return redirect ? (
@@ -44,18 +47,25 @@ export const Home = ({}) => {
 	) : (
 		<div className="Home">
 			<div className="HomeHeader">Mairead</div>
-			<div className="HomeGame">
-				<input
-					id="homeInput"
-					className="HomeInput"
-					type="text"
-					name="gameUrl"
-					value={gameUrl}
-					onChange={handleChange}
-				/>
-				<button className="HomeBtn" onClick={handleCreateClick}>
-					Create
-				</button>
+			<div>
+				<div className="HomeGame">
+					<input
+						id="homeInput"
+						className={'HomeInput' + (error ? ' HomeInput--error' : '')}
+						type="text"
+						name="gameUrl"
+						value={gameUrl}
+						onChange={handleChange}
+					/>
+					<button
+						className={'HomeBtn' + (error ? ' HomeBtn--error' : '')}
+						disabled={!!error}
+						onClick={handleCreateClick}
+					>
+						Create
+					</button>
+				</div>
+				<div className="HomeError">{error}</div>
 			</div>
 			<div className="HomeFooter">
 				Made with love by{' '}

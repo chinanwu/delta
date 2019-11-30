@@ -10,7 +10,7 @@ export const Game = ({ match }) => {
 					'http://localhost:5000/api/games/create',
 					JSON.stringify({ url: url })
 				).then(res => {
-					console.log(res.success);
+					console.log(res);
 				});
 			}
 		});

@@ -9,18 +9,16 @@ import Game from './components/Game.jsx';
 import Home from './components/Home.jsx';
 import NotFound from './components/NotFound.jsx';
 
-const App = () => {
-	return (
-		<Provider store={store}>
-			<Router>
-				<Switch>
-					<Route exact path="/" component={Home} />
-					<Route exact path="/game/:gameUrl(/^[a-z]+$/i)" component={Game} />
-					<Route component={NotFound} />
-				</Switch>
-			</Router>
-		</Provider>
-	);
-};
+const App = () => (
+	<Provider store={store}>
+		<Router>
+			<Switch>
+				<Route exact path="/" component={Home} />
+				<Route exact path="/game/:gameUrl(/^[a-z]+$/i)" component={Game} />
+				<Route component={NotFound} />
+			</Switch>
+		</Router>
+	</Provider>
+);
 
 export default App;
