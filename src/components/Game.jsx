@@ -29,6 +29,7 @@ export const Game = ({
 					console.log('Game created in Game page, setting data');
 					setFrom(res.data.from);
 					sessionStorage.setItem(gameUrl + '-from', res.data.from);
+					setEntries([res.data.from]);
 					setTo(res.data.to);
 					sessionStorage.setItem(gameUrl + '-to', res.data.to);
 				});
@@ -36,6 +37,7 @@ export const Game = ({
 				console.log('Game exists, setting data');
 				setFrom(res.data.from);
 				sessionStorage.setItem(gameUrl + '-from', res.data.from);
+				setEntries([res.data.from]);
 				setTo(res.data.to);
 				sessionStorage.setItem(gameUrl + '-to', res.data.to);
 			}
