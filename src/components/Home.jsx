@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import { postFetch } from '../functions/FetchFunctions';
 import generateGameUrl from '../functions/generateGameUrl';
-import isWord from '../functions/isWord';
+import isWord from '../functions/hasValidCharacters';
 
 import './Home.less';
 

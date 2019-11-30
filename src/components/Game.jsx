@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { getFetch, postFetch } from '../functions/FetchFunctions';
-import isWord from '../functions/isWord';
+import hasValidCharacters from '../functions/hasValidCharacters';
 
 import './Game.less';
 
@@ -16,6 +16,7 @@ export const Game = ({
 	const [to, setTo] = useState(sessionStorage.getItem(gameUrl + '-to') || null);
 	const [entries, setEntries] = useState([]);
 	const [text, setText] = useState('');
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		getFetch('http://localhost:5000/api/games/' + gameUrl).then(res => {
@@ -40,12 +41,20 @@ export const Game = ({
 		});
 	}, []);
 
-	const handleChange = useCallback(event => {
-		if (event && event.target) {
-			const value = event.target.value;
-			value ? (isWord(value) ? setText(value) : null) : setText('');
-		}
-	}, []);
+	const handleChange = useCallback(
+		event => {
+			if (event && event.target) {
+				const value = event.target.value;
+				value
+					? (setText(value),
+					  hasValidCharacters(value)
+							? setError(null)
+							: setError('Invalid word'))
+					: setText('');
+			}
+		},
+		[setText, setError]
+	);
 
 	const handleKeyDown = useCallback(
 		event => {
@@ -55,7 +64,7 @@ export const Game = ({
 						'http://localhost:5000/api/words/validate?word=' + text
 					).then(res => {
 						res
-							? text.length === 4
+							? text.length === 4 && error === null
 								? setEntries(entries => {
 										if (entries === []) {
 											return [text];
@@ -64,19 +73,19 @@ export const Game = ({
 										}
 								  })
 								: null
-							: null;
+							: setError('Invalid word');
 					});
 				}
 			}
 		},
-		[text]
+		[text, error]
 	);
 
 	const handleClick = useCallback(() => {
 		getFetch('http://localhost:5000/api/words/validate?word=' + text).then(
 			res => {
 				res
-					? text.length === 4
+					? text.length === 4 && error === null
 						? setEntries(entries => {
 								if (entries === []) {
 									return [text];
@@ -85,10 +94,10 @@ export const Game = ({
 								}
 						  })
 						: null
-					: null;
+					: setError('Invalid word');
 			}
 		);
-	}, [text]);
+	}, [text, error]);
 
 	return (
 		<div className="Game">
@@ -112,7 +121,9 @@ export const Game = ({
 				<div className="Game__entry">
 					<div className="Game__entryInputContainer">
 						<input
-							className="Game__entryInput"
+							className={
+								'Game__entryInput' + (error ? ' Game__entryInput--error' : '')
+							}
 							type="text"
 							value={text}
 							maxLength={4}
