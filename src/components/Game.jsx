@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { getFetch, postFetch } from '../functions/FetchFunctions';
+import isWord from '../functions/isWord';
 
 import './Game.less';
 
@@ -41,7 +42,8 @@ export const Game = ({
 
 	const handleChange = useCallback(event => {
 		if (event && event.target) {
-			event.target.value ? setText(event.target.value) : setText('');
+			const value = event.target.value;
+			value ? (isWord(value) ? setText(value) : null) : setText('');
 		}
 	}, []);
 
@@ -49,12 +51,20 @@ export const Game = ({
 		event => {
 			if (event && event.target && event.keyCode) {
 				if (event.keyCode === 13 || event.keyCode === 32) {
-					setEntries(entries => {
-						if (entries === []) {
-							return [text];
-						} else {
-							return [...entries, text];
-						}
+					getFetch(
+						'http://localhost:5000/api/words/validate?word=' + text
+					).then(res => {
+						res
+							? text.length === 4
+								? setEntries(entries => {
+										if (entries === []) {
+											return [text];
+										} else {
+											return [...entries, text];
+										}
+								  })
+								: null
+							: null;
 					});
 				}
 			}
@@ -63,13 +73,21 @@ export const Game = ({
 	);
 
 	const handleClick = useCallback(() => {
-		setEntries(entries => {
-			if (entries === []) {
-				return [text];
-			} else {
-				return [...entries, text];
+		getFetch('http://localhost:5000/api/words/validate?word=' + text).then(
+			res => {
+				res
+					? text.length === 4
+						? setEntries(entries => {
+								if (entries === []) {
+									return [text];
+								} else {
+									return [...entries, text];
+								}
+						  })
+						: null
+					: null;
 			}
-		});
+		);
 	}, [text]);
 
 	return (
@@ -106,6 +124,7 @@ export const Game = ({
 						Submit
 					</button>
 				</div>
+				<button className="Game__historyClear">x</button>
 			</div>
 		</div>
 	);

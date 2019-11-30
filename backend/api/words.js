@@ -1,13 +1,8 @@
-const path = require('path');
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
+const WordsController = require('../controllers/WordsController');
 
-router.get("/", (req, res) =>
-  fs.readFile(path.join(__dirname, '../resources/words.txt'), 'utf8', (err, words) => {
-    if (err) throw err;
-    res.send(words);
-  })
-);
+router.get('/', WordsController.getWords);
+router.get('/validate', WordsController.validateWord);
 
 module.exports = router;

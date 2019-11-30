@@ -3,10 +3,9 @@ import { Redirect } from 'react-router-dom';
 
 import { postFetch } from '../functions/FetchFunctions';
 import generateGameUrl from '../functions/generateGameUrl';
+import isWord from '../functions/isWord';
 
 import './Home.less';
-
-const REGEX = /^[a-z]+$/i;
 
 export const Home = ({}) => {
 	const [gameUrl, setGameUrl] = useState(generateGameUrl);
@@ -18,7 +17,7 @@ export const Home = ({}) => {
 			if (event.target.value) {
 				const url = event.target.value;
 				setGameUrl(url);
-				!REGEX.test(url)
+				!isWord(url)
 					? setError('Game URL must only contain letters')
 					: setError(null);
 			} else {
