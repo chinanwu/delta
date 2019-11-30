@@ -31,19 +31,56 @@
 	text-align: center;
 }
 
-.Game__history {
+.Game__input {
+	width: 100%;
+	overflow: hidden;
+	font-size: 18px;
+	background-image: url('./textbox.png');
+	background-size: contain;
+}
+
+.Game__solution {
 	position: relative;
 	border: 1px solid black;
-	height: 50%;
+	height: 80%;
 	margin-left: 18px;
 	margin-right: 18px;
 }
 
-.Game__input {
+.Game__history {
+	display: flex;
+	flex-direction: column;
+	overflow: scroll;
+	height: calc(100% - 51px);
+	box-sizing: border-box;
+}
+
+.Game__entry {
+	display: flex;
 	position: absolute;
 	bottom: 0;
+	justify-content: center;
 	width: 100%;
-	overflow: hidden;
-	box-sizing: border-box;
-	font-size: 18px;
+	margin-bottom: 12px;
+	padding-top: 12px;
+	border-top: 1px solid black;
+}
+
+.Game__entryInputContainer {
+	display: flex;
+}
+
+.Game__entryInput {
+	border: none;
+	letter-spacing: 19px;
+	font-size: 24px;
+	background-image: url('./textbox.png'), url('./textbox.png'),
+		url('./textbox.png'), url('./textbox.png');
+	background-position: 0 top, 30px top, 60px top, 90px top;
+	background-size: contain;
+	background-repeat: no-repeat;
+	color: transparent;
+	text-shadow: 0 0 0 #000;
+	width: 150px;
+	cursor: pointer;
 }

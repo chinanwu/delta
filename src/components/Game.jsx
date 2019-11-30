@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { getFetch, postFetch } from '../functions/FetchFunctions';
 
@@ -39,6 +39,39 @@ export const Game = ({
 		});
 	}, []);
 
+	const handleChange = useCallback(event => {
+		if (event && event.target) {
+			event.target.value ? setText(event.target.value) : setText('');
+		}
+	}, []);
+
+	const handleKeyDown = useCallback(
+		event => {
+			if (event && event.target && event.keyCode) {
+				if (event.keyCode === 13 || event.keyCode === 32) {
+					setEntries(entries => {
+						if (entries === []) {
+							return [text];
+						} else {
+							return [...entries, text];
+						}
+					});
+				}
+			}
+		},
+		[text]
+	);
+
+	const handleClick = useCallback(() => {
+		setEntries(entries => {
+			if (entries === []) {
+				return [text];
+			} else {
+				return [...entries, text];
+			}
+		});
+	}, [text]);
+
 	return (
 		<div className="Game">
 			<div className="Game__header">
@@ -52,12 +85,34 @@ export const Game = ({
 					<div className="Game__word">{to ? to : '...'}</div>
 				</div>
 			</div>
-			<div className="Game__history">
-				<div className="Game__entries">{entries}</div>
-				<input className="Game__input" type="text" value={text} />
+			<div className="Game__solution">
+				<div className="Game__history">
+					{entries.map((entry, index) => (
+						<div key={entry + index}>{entry}</div>
+					))}
+				</div>
+				<div className="Game__entry">
+					<div className="Game__entryInputContainer">
+						<input
+							className="Game__entryInput"
+							type="text"
+							value={text}
+							maxLength={4}
+							onChange={handleChange}
+							onKeyDown={handleKeyDown}
+						/>
+					</div>
+					<button className="Game__btn" onClick={handleClick}>
+						Submit
+					</button>
+				</div>
 			</div>
 		</div>
 	);
 };
 
 export default Game;
+
+// TODO
+// Not allow dupes in entries
+// Enforce 4 letters in entry
