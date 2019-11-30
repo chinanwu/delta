@@ -25,6 +25,8 @@ export const About = () => (
 				<div>{word}</div>
 			))}
 		</div>
+		<div className="About__label">Big thank you to M.C.S.</div>
+		<div className="About__content">Originator of game</div>
 	</div>
 );
 
