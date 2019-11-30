@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ const App = () => (
 		<Router>
 			<Switch>
 				<Route exact path="/" component={Home} />
-				<Route exact path="/game/:gameUrl(/^[a-z]+$/i)" component={Game} />
+				<Route exact path="/game/:gameUrl([a-zA-Z]+)" component={Game} />
 				<Route component={NotFound} />
 			</Switch>
 		</Router>

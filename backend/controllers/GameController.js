@@ -16,7 +16,7 @@ const getGame = (req, res) =>
 			? res.json({ success: false, error: err })
 			: data.length === 0
 			? res.json({ success: false, error: 'No Game Found' })
-			: res.json({ success: true, data: data })
+			: res.json({ success: true, data: data[0] })
 	);
 
 const createGame = (req, res) => {
@@ -40,6 +40,8 @@ const createGame = (req, res) => {
 						success: true,
 						id: game._id,
 						url: game.url,
+						from: game.from,
+						to: game.to,
 						message: 'Game created!',
 					});
 				})

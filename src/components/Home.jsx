@@ -46,28 +46,28 @@ export const Home = ({}) => {
 		<Redirect to={'/game/' + gameUrl} />
 	) : (
 		<div className="Home">
-			<div className="HomeHeader">Mairead</div>
+			<div className="Home__header">Mairead</div>
 			<div>
-				<div className="HomeGame">
+				<div className="Home__game">
 					<input
 						id="homeInput"
-						className={'HomeInput' + (error ? ' HomeInput--error' : '')}
+						className={'Home__input' + (error ? ' Home__input--error' : '')}
 						type="text"
 						name="gameUrl"
 						value={gameUrl}
 						onChange={handleChange}
 					/>
 					<button
-						className={'HomeBtn' + (error ? ' HomeBtn--error' : '')}
+						className={'home__btn' + (error ? ' home__btn--error' : '')}
 						disabled={!!error}
 						onClick={handleCreateClick}
 					>
 						Create
 					</button>
 				</div>
-				<div className="HomeError">{error}</div>
+				<div className="Home__error">{error}</div>
 			</div>
-			<div className="HomeFooter">
+			<div className="Home__footer">
 				Made with love by{' '}
 				<a href="https://www.github.com/chinanwu">Chin-An Wu</a>
 			</div>
