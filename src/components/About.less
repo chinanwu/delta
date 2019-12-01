@@ -9,32 +9,23 @@
 }
 
 .About__nav {
-	position: absolute;
-	top: 24px;
-	left: 12px;
-	font-size: 18px;
+	@nav();
 }
 
-.About__home {
-	padding: 12px;
-	border-radius: 2px;
-	background-color: @blackBtn;
-	box-shadow: @box-shadow-01;
-	color: white;
+.About__navBtn {
+	@navBtn();
 }
 
-.About__home:hover {
-	background-color: @blackBtn-light;
-	box-shadow: @box-shadow-02;
+.About__navBtn:hover {
+	@navBtnHover();
 }
 
-.About__home:active {
-	background-color: @blackBtn;
-	box-shadow: @box-shadow-02;
+.About__navBtn:active {
+	@navBtnActive();
 }
 
 .About__header {
-	font-size: 64px;
+	@header();
 }
 
 .About__label {
@@ -45,4 +36,8 @@
 .About__content {
 	text-align: center;
 	margin-bottom: 18px;
+}
+
+.About__list {
+	list-style-type: none;
 }

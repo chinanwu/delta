@@ -45,12 +45,17 @@ export const Home = () => {
 		<Redirect to={'/game/' + gameUrl} />
 	) : (
 		<div className="Home">
-			<div className="Home__nav">
-				<a className="Home__about" href="/about">
+			<div className="Home__nav" role="navigation" aria-label="Main">
+				<a className="Home__navBtn" href="/about">
 					About
 				</a>
+				<a className="Home__navBtn" href="/settings">
+					Settings
+				</a>
 			</div>
-			<div className="Home__header">Mairead</div>
+			<div className="Home__header" role="banner">
+				Mairead
+			</div>
 			<div>
 				<div className="Home__game">
 					<input
@@ -71,7 +76,7 @@ export const Home = () => {
 				</div>
 				<div className="Home__error">{error}</div>
 			</div>
-			<div className="Home__footer">
+			<div className="Home__footer" aria-label="Footer">
 				Made with love by{' '}
 				<a href="https://www.github.com/chinanwu">Chin-An Wu</a>
 			</div>

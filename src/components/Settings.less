@@ -1,0 +1,29 @@
+@import '../style/styles';
+
+.Settings {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.Settings__nav {
+	@nav();
+}
+
+.Settings__navBtn {
+	@navBtn();
+}
+
+.Settings__navBtn:hover {
+	@navBtnHover();
+}
+
+.Settings__nav:active {
+	@navBtnActive();
+}
+
+.Settings__header {
+	@header();
+}
