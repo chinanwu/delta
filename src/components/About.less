@@ -8,6 +8,10 @@
 	height: 100%;
 }
 
+.About--dark {
+	@dark();
+}
+
 .About__nav {
 	@nav();
 }
@@ -16,12 +20,32 @@
 	@navBtn();
 }
 
+.About__navBtn--dark {
+	@darkNavBtn();
+}
+
 .About__navBtn:hover {
 	@navBtnHover();
 }
 
+.About__navBtn--dark:hover {
+	@darkNavBtnHover();
+}
+
 .About__navBtn:active {
 	@navBtnActive();
+}
+
+.About__navBtn--dark:active {
+	@darkNavBtn();
+}
+
+.About__navBtn--disabled {
+	@disabledNavBtn();
+}
+
+.About__navBtn--disabled--dark {
+	@disabledDarkNavBtn();
 }
 
 .About__header {

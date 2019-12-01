@@ -1,16 +1,24 @@
-import React, { useCallback, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Redirect, useHistory, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import { postFetch } from '../functions/FetchFunctions';
 import generateGameUrl from '../functions/generateGameUrl';
+import getThemeClassname from '../functions/getThemeClassname';
 import hasValidCharacters from '../functions/hasValidCharacters';
 
 import './Home.less';
 
-export const Home = () => {
+export const Home = ({ dark }) => {
 	const [gameUrl, setGameUrl] = useState(generateGameUrl);
 	const [error, setError] = useState(null);
 	const [redirect, setRedirect] = useState(false);
+	const history = useHistory();
+
+	useEffect(() => {
+		document.title = 'Mairead';
+	}, []);
 
 	const handleChange = useCallback(event => {
 		if (event && event.target) {
@@ -44,14 +52,23 @@ export const Home = () => {
 	return redirect ? (
 		<Redirect to={'/game/' + gameUrl} />
 	) : (
-		<div className="Home">
+		<div className={getThemeClassname('Home', dark)}>
 			<div className="Home__nav" role="navigation" aria-label="Main">
-				<a className="Home__navBtn" href="/about">
+				<Link
+					className={getThemeClassname('Home__navBtn--disabled', dark)}
+					to="/"
+				>
+					Home
+				</Link>
+				<Link className={getThemeClassname('Home__navBtn', dark)} to="/about">
 					About
-				</a>
-				<a className="Home__navBtn" href="/settings">
+				</Link>
+				<Link
+					className={getThemeClassname('Home__navBtn', dark)}
+					to="/settings"
+				>
 					Settings
-				</a>
+				</Link>
 			</div>
 			<div className="Home__header" role="banner">
 				Mairead
@@ -67,7 +84,7 @@ export const Home = () => {
 						onChange={handleChange}
 					/>
 					<button
-						className={'home__btn' + (error ? ' home__btn--error' : '')}
+						className={'Home__btn' + (error ? ' Home__btn--error' : '')}
 						disabled={!!error}
 						onClick={handleCreateClick}
 					>
@@ -76,7 +93,10 @@ export const Home = () => {
 				</div>
 				<div className="Home__error">{error}</div>
 			</div>
-			<div className="Home__footer" aria-label="Footer">
+			<div
+				className={getThemeClassname('Home__footer', dark)}
+				aria-label="Footer"
+			>
 				Made with love by{' '}
 				<a href="https://www.github.com/chinanwu">Chin-An Wu</a>
 			</div>
@@ -84,4 +104,12 @@ export const Home = () => {
 	);
 };
 
-export default Home;
+Home.propTypes = {
+	dark: PropTypes.bool,
+};
+
+export const mapStateToProps = ({ theme }) => ({
+	dark: theme.dark,
+});
+
+export default connect(mapStateToProps)(Home);

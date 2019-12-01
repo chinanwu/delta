@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { getFetch, postFetch } from '../functions/FetchFunctions';
+import getThemeClassname from '../functions/getThemeClassname';
 import hasValidCharacters from '../functions/hasValidCharacters';
 
 import './Game.less';
@@ -10,6 +13,7 @@ export const Game = ({
 	match: {
 		params: { gameUrl },
 	},
+	dark,
 }) => {
 	const [from, setFrom] = useState(
 		sessionStorage.getItem(gameUrl + '-from') || null
@@ -18,8 +22,10 @@ export const Game = ({
 	const [entries, setEntries] = useState([]);
 	const [text, setText] = useState('');
 	const [error, setError] = useState(null);
+	const [win, setWin] = useState(false);
 
 	useEffect(() => {
+		document.title = 'Game - Mairead';
 		getFetch('http://localhost:5000/api/games/' + gameUrl).then(res => {
 			if (!res.success) {
 				postFetch(
@@ -73,29 +79,41 @@ export const Game = ({
 	const handleClick = useCallback(() => {
 		getFetch('http://localhost:5000/api/words/validate?word=' + text).then(
 			res => {
-				res
-					? text.length === 4 && error === null
-						? (setEntries(entries => {
-								if (entries === []) {
-									return [text];
-								} else {
-									return [...entries, text];
-								}
-						  }),
-						  setText(''),
-						  setError(null))
-						: null
-					: setError('Invalid word');
+				if (res) {
+					setEntries(entries => {
+						if (entries === []) {
+							return [text];
+						} else {
+							return [...entries, text];
+						}
+					});
+					setText('');
+					setError(null);
+					text === to ? setWin(true) : setWin(false);
+				} else {
+					setError('Invalid word');
+				}
 			}
 		);
 	}, [text, error]);
 
 	return (
-		<div className="Game">
+		<div className={getThemeClassname('Game', dark)}>
+			<div className="Game__nav" role="navigation" aria-label="Game">
+				<Link className={getThemeClassname('Game__navBtn', dark)} to="/">
+					Home
+				</Link>
+				<Link className={getThemeClassname('Game__navBtn', dark)} to="/about">
+					About
+				</Link>
+				<Link
+					className={getThemeClassname('Game__navBtn', dark)}
+					to="/settings"
+				>
+					Settings
+				</Link>
+			</div>
 			<div className="Game__header">
-				<div className="Game__logo">
-					<a href="/">Mairead</a>
-				</div>
 				<div className="Game__words">
 					<div className="Game__label">From:</div>
 					<div className="Game__word">{from ? from : '...'}</div>
@@ -106,7 +124,9 @@ export const Game = ({
 			<div className="Game__solution">
 				<div className="Game__history">
 					{entries.map((entry, index) => (
-						<div key={entry + index}>{entry}</div>
+						<div className="Game__historyItem" key={entry + index}>
+							{entry}
+						</div>
 					))}
 				</div>
 				<div className="Game__entry">
@@ -128,12 +148,18 @@ export const Game = ({
 				</div>
 				<button className="Game__historyClear">x</button>
 			</div>
+			<div className={win ? 'Game__win' : 'Game__win--hidden'}>You've won!</div>
 		</div>
 	);
 };
 
 Game.propTypes = {
 	match: PropTypes.object,
+	dark: PropTypes.bool,
 };
 
-export default Game;
+export const mapStateToProps = ({ theme }) => ({
+	dark: theme.dark,
+});
+
+export default connect(mapStateToProps)(Game);
