@@ -12,6 +12,7 @@
 	display: flex;
 	justify-content: center;
 	padding-top: 64px;
+	margin-bottom: 12px;
 }
 
 .Game__nav {
@@ -69,6 +70,15 @@
 	background-size: contain;
 }
 
+.Game__seed {
+	text-align: center;
+	position: absolute;
+	right: 12px;
+	top: 12px;
+	border: 1px solid black;
+	padding: 5px;
+}
+
 .Game__solution {
 	position: relative;
 	border: 1px solid black;
@@ -91,7 +101,7 @@
 
 .Game__historyItem {
 	margin-left: 6px;
-	font-size: 18px;
+	font-size: 24px;
 }
 
 .Game__entry {
@@ -111,16 +121,16 @@
 
 .Game__entryInput {
 	border: none;
-	letter-spacing: 19px;
+	letter-spacing: 24px;
 	font-size: 24px;
 	background-image: url('./textbox.png'), url('./textbox.png'),
 		url('./textbox.png'), url('./textbox.png');
-	background-position: 0 top, 30px top, 60px top, 90px top;
+	background-position: 0 top, 37px top, 74px top, 111px top;
 	background-size: contain;
 	background-repeat: no-repeat;
 	color: transparent;
 	text-shadow: 0 0 0 #000;
-	width: 150px;
+	width: 160px;
 	cursor: pointer;
 }
 
@@ -134,6 +144,8 @@
 	right: 0;
 	top: 0;
 	border: none;
+	font-size: 18px;
+	cursor: pointer;
 }
 
 .Game__win {

@@ -8,6 +8,7 @@ import getThemeClassname from '../functions/getThemeClassname';
 import hasValidCharacters from '../functions/hasValidCharacters';
 
 import './Game.less';
+import isOneOff from '../functions/isOneOff';
 
 export const Game = ({
 	match: {
@@ -79,7 +80,7 @@ export const Game = ({
 	const handleClick = useCallback(() => {
 		getFetch('http://localhost:5000/api/words/validate?word=' + text).then(
 			res => {
-				if (res) {
+				if (res && isOneOff(entries[entries.length - 1], text)) {
 					setEntries(entries => {
 						if (entries === []) {
 							return [text];
@@ -95,7 +96,12 @@ export const Game = ({
 				}
 			}
 		);
-	}, [text, error]);
+	}, [setEntries, setText, setWin, text, error]);
+
+	const handleClearClick = useCallback(() => {
+		setEntries([from]);
+		setText('');
+	}, [setEntries, from]);
 
 	return (
 		<div className={getThemeClassname('Game', dark)}>
@@ -120,6 +126,10 @@ export const Game = ({
 					<div className="Game__label">To: </div>
 					<div className="Game__word">{to ? to : '...'}</div>
 				</div>
+			</div>
+			<div className="Game__seed">
+				<div>Seed:</div>
+				<div>{gameUrl}</div>
 			</div>
 			<div className="Game__solution">
 				<div className="Game__history">
@@ -146,7 +156,9 @@ export const Game = ({
 						Submit
 					</button>
 				</div>
-				<button className="Game__historyClear">x</button>
+				<button className="Game__historyClear" onClick={handleClearClick}>
+					x
+				</button>
 			</div>
 			<div className={win ? 'Game__win' : 'Game__win--hidden'}>You've won!</div>
 		</div>
