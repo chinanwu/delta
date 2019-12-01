@@ -86,15 +86,30 @@
 }
 
 .Game__newBtn {
+	background-color: @blackBtn;
+	color: white;
 	border: none;
 	padding: 3px;
 	cursor: pointer;
+	border-radius: 3px;
+	font-size: 16px;
+	box-shadow: @box-shadow-01;
+}
+
+.Game__newBtn:hover {
+	background-color: @blackBtn-light;
+	box-shadow: @box-shadow-02;
+}
+
+.Game__newBtn:active {
+	background-color: @blackBtn;
+	box-shadow: @box-shadow-02;
 }
 
 .Game__solution {
 	position: relative;
 	border: 1px solid black;
-	height: 80%;
+	height: 60%;
 	margin-left: 18px;
 	margin-right: 18px;
 }
