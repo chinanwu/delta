@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import { getFetch, postFetch } from '../functions/FetchFunctions';
 import getThemeClassname from '../functions/getThemeClassname';
 import hasValidCharacters from '../functions/hasValidCharacters';
+import isOneOff from '../functions/isOneOff';
 
 import './Game.less';
-import isOneOff from '../functions/isOneOff';
 
 export const Game = ({
 	match: {
@@ -30,21 +30,21 @@ export const Game = ({
 		getFetch('http://localhost:5000/api/games/' + gameUrl).then(res => {
 			if (!res.success) {
 				postFetch(
-					'http://localhost:5000/api/games/create',
+					'http://localhost:5000/api/games/new',
 					JSON.stringify({ url: gameUrl })
 				).then(res => {
-					console.log('Game created in Game page, setting data');
 					setFrom(res.data.from);
 					sessionStorage.setItem(gameUrl + '-from', res.data.from);
 					setEntries([res.data.from]);
+
 					setTo(res.data.to);
 					sessionStorage.setItem(gameUrl + '-to', res.data.to);
 				});
 			} else {
-				console.log('Game exists, setting data');
 				setFrom(res.data.from);
 				sessionStorage.setItem(gameUrl + '-from', res.data.from);
 				setEntries([res.data.from]);
+
 				setTo(res.data.to);
 				sessionStorage.setItem(gameUrl + '-to', res.data.to);
 			}
@@ -103,6 +103,19 @@ export const Game = ({
 		setText('');
 	}, [setEntries, from]);
 
+	const handleNewClick = useCallback(() => {
+		getFetch('http://localhost:5000/api/games/' + gameUrl + '/new').then(
+			res => {
+				setFrom(res.data.from);
+				sessionStorage.setItem(gameUrl + '-from', res.data.from);
+				setEntries([res.data.from]);
+
+				setTo(res.data.to);
+				sessionStorage.setItem(gameUrl + '-to', res.data.to);
+			}
+		);
+	}, [setFrom, setEntries, setTo]);
+
 	return (
 		<div className={getThemeClassname('Game', dark)}>
 			<div className="Game__nav" role="navigation" aria-label="Game">
@@ -131,6 +144,11 @@ export const Game = ({
 				<div>Seed:</div>
 				<div>{gameUrl}</div>
 			</div>
+			<div className="Game__new">
+				<button className="Game__newBtn" onClick={handleNewClick}>
+					New Game
+				</button>
+			</div>
 			<div className="Game__solution">
 				<div className="Game__history">
 					{entries.map((entry, index) => (
@@ -152,11 +170,15 @@ export const Game = ({
 							onKeyDown={handleKeyDown}
 						/>
 					</div>
-					<button className="Game__btn" onClick={handleClick}>
+					<button className="Game__submitBtn" onClick={handleClick}>
 						Submit
 					</button>
 				</div>
-				<button className="Game__historyClear" onClick={handleClearClick}>
+				<button
+					className="Game__historyClear"
+					title="Clear history"
+					onClick={handleClearClick}
+				>
 					x
 				</button>
 			</div>

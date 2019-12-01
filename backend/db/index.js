@@ -4,6 +4,7 @@ mongoose
 	.connect('mongodb://localhost/mairead', {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
+		useCreateIndex: true,
 	})
 	.catch(e => {
 		console.error('Connection error', e.message);

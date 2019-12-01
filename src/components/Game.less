@@ -12,7 +12,7 @@
 	display: flex;
 	justify-content: center;
 	padding-top: 64px;
-	margin-bottom: 12px;
+	margin-bottom: 6px;
 }
 
 .Game__nav {
@@ -79,6 +79,18 @@
 	padding: 5px;
 }
 
+.Game__new {
+	text-align: right;
+	margin-right: 18px;
+	margin-bottom: 6px;
+}
+
+.Game__newBtn {
+	border: none;
+	padding: 3px;
+	cursor: pointer;
+}
+
 .Game__solution {
 	position: relative;
 	border: 1px solid black;
@@ -137,6 +149,19 @@
 .Game__entryInput--error {
 	background-image: url('./textboxerror.png'), url('./textboxerror.png'),
 		url('./textboxerror.png'), url('./textboxerror.png');
+}
+
+.Game__submitBtn {
+	border: none;
+	background-color: @greenBtn;
+}
+
+.Game__submitBtn:hover {
+	background-color: @greenBtnHover;
+}
+
+.Game__submitBtn:active {
+	background-color: @greenBtnActive;
 }
 
 .Game__historyClear {

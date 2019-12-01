@@ -38,7 +38,7 @@ export const Home = ({ dark }) => {
 	const handleCreateClick = useCallback(() => {
 		if (!error) {
 			postFetch(
-				'http://localhost:5000/api/games/create',
+				'http://localhost:5000/api/games/new',
 				JSON.stringify({ url: gameUrl })
 			).then(res => {
 				console.log('Creating game: ' + res.success);

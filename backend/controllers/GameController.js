@@ -46,8 +46,25 @@ const createGame = (req, res) => {
 		});
 };
 
+const createGameFromExisting = (req, res) => {
+	const max = words.length;
+	const from = words[getRandom(max)];
+	const to = words[getRandom(max)];
+	const values = { $set: { from: from, to: to } };
+
+	Game.updateOne({ url: req.params.url }, values)
+		.then(() => getGame(req, res))
+		.catch(error =>
+			res.status(400).json({
+				error,
+				message: 'Game not created!',
+			})
+		);
+};
+
 module.exports = {
 	getGames,
 	getGame,
 	createGame,
+	createGameFromExisting,
 };
