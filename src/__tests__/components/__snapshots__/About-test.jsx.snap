@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`About component rendering renders About 1`] = `
+<div>
+  <Memo(Connect(NavBar))
+    activeTab="about"
+  />
+  <div
+    aria-level="1"
+    className="About__header"
+    role="heading"
+  >
+    About
+  </div>
+  <div
+    aria-level="2"
+    className="About__label"
+    id="aboutRulesLabel"
+  >
+    Rules
+  </div>
+  <div
+    aria-labelledby="aboutRulesLabel"
+    aria-level="3"
+    className="About__content"
+    role="document"
+    tabIndex="0"
+  >
+    In each game, you are given two words, a "from" word and a "to" word. Starting from the "from" word, one letter is changed at a time until the word becomes the "to" word. However, each time a letter is swapped out, the resulting new word must still be a valid four-letter word in the English language.
+  </div>
+  <div
+    aria-level="2"
+    className="About__label"
+    id="aboutExampleLabel"
+  >
+    Example
+  </div>
+  <div
+    aria-labelledby="aboutExampleLabel"
+    aria-level="3"
+    className="About__content"
+    role="document"
+    tabIndex="0"
+  >
+    From: "heat" -&gt; To: "cold"
+    <div
+      aria-level="4"
+      role="list"
+    >
+      <div
+        aria-level="4"
+        role="listitem"
+      >
+        heat
+      </div>
+      <div
+        aria-level="4"
+        role="listitem"
+      >
+        head
+      </div>
+      <div
+        aria-level="4"
+        role="listitem"
+      >
+        held
+      </div>
+      <div
+        aria-level="4"
+        role="listitem"
+      >
+        hold
+      </div>
+      <div
+        aria-level="4"
+        role="listitem"
+      >
+        cold
+      </div>
+    </div>
+  </div>
+  <div
+    aria-level="2"
+    className="About__label"
+    id="aboutThankYouLabel"
+  >
+    Big thank you to M.C.S.
+  </div>
+  <div
+    aria-labelledby="aboutThankYouLabel"
+    aria-level="3"
+    className="About__content"
+    role="document"
+    tabIndex="0"
+  >
+    Originator of Mairead, the game
+  </div>
+</div>
+`;

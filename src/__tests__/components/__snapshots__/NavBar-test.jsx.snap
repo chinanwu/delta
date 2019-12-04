@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavBar component rendering renders NavBar 1`] = `
+<div
+  aria-label="Game"
+  className="NavBar"
+  role="navigation"
+>
+  <ForwardRef
+    to="/"
+  >
+    Home
+  </ForwardRef>
+  <ForwardRef
+    to="/about"
+  >
+    About
+  </ForwardRef>
+  <ForwardRef
+    to="/settings"
+  >
+    Settings
+  </ForwardRef>
+</div>
+`;

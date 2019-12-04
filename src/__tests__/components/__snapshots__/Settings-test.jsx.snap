@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Settings component rendering renders Settings 1`] = `
+<div>
+  <Memo(Connect(NavBar))
+    activeTab="settings"
+  />
+  <div
+    className="Settings__header"
+  >
+    Settings
+  </div>
+  <div
+    className="Settings__options"
+  >
+    <div
+      className="Settings__option"
+    >
+      <div
+        className="Settings__label"
+      >
+        Dark Theme:
+      </div>
+      <label
+        className="Settings__toggle"
+      >
+        <input
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <span />
+      </label>
+    </div>
+  </div>
+</div>
+`;

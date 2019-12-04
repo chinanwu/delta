@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home component rendering renders Home 1`] = `
+<div>
+  <Memo(Connect(NavBar))
+    activeTab="home"
+  />
+  <div
+    className="Home__header"
+    role="banner"
+  >
+    Mairead
+  </div>
+  <div>
+    <div
+      className="Home__game"
+    >
+      <input
+        className="Home__input"
+        id="homeInput"
+        name="gameUrl"
+        onChange={[Function]}
+        type="text"
+        value={[MockFunction]}
+      />
+      <button
+        className="Home__btn"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Create
+      </button>
+    </div>
+    <div
+      className="Home__error"
+    />
+  </div>
+  <div
+    aria-label="Footer"
+  >
+    Made with love by
+     
+    <a
+      href="https://www.github.com/chinanwu"
+    >
+      Chin-An Wu
+    </a>
+  </div>
+</div>
+`;
