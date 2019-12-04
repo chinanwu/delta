@@ -24,7 +24,7 @@ module.exports = server => {
 			socket.broadcast.to(data.room).emit('someone has won', data);
 		});
 
-		socket.on('words change', data => {
+		socket.on('words:change', data => {
 			console.log('user has changed words');
 			socket.broadcast
 				.to(data.room)

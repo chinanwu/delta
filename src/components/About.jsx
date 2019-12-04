@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import './About.less';
 import getThemeClassname from '../functions/getThemeClassname';
+
+import './About.less';
+import NavBar from './NavBar.jsx';
 
 export const About = ({ dark }) => {
 	useEffect(() => {
@@ -13,23 +14,7 @@ export const About = ({ dark }) => {
 
 	return (
 		<div className={getThemeClassname('About', dark)}>
-			<div className="About__nav" role="navigation">
-				<Link className={getThemeClassname('About__navBtn', dark)} to="/">
-					Home
-				</Link>
-				<Link
-					className={getThemeClassname('About__navBtn--disabled', dark)}
-					to="/about"
-				>
-					About
-				</Link>
-				<Link
-					className={getThemeClassname('About__navBtn', dark)}
-					to="/settings"
-				>
-					Settings
-				</Link>
-			</div>
+			<NavBar activeTab="about" />
 			<div className="About__header" role="heading" aria-level="1">
 				About
 			</div>

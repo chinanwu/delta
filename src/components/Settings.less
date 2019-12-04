@@ -12,42 +12,6 @@
 	@dark();
 }
 
-.Settings__nav {
-	@nav();
-}
-
-.Settings__navBtn {
-	@navBtn();
-}
-
-.Settings__navBtn--dark {
-	@darkNavBtn();
-}
-
-.Settings__navBtn:hover {
-	@navBtnHover();
-}
-
-.Settings__navBtn--dark:hover {
-	@darkNavBtnHover();
-}
-
-.Settings__navBtn:active {
-	@navBtnActive();
-}
-
-.Settings__navBtn--dark:active {
-	@darkNavBtn();
-}
-
-.Settings__navBtn--disabled {
-	@disabledNavBtn();
-}
-
-.Settings__navBtn--disabled--dark {
-	@disabledDarkNavBtn();
-}
-
 .Settings__header {
 	@header();
 	margin-bottom: 24px;
@@ -66,20 +30,20 @@
 	width: 24px;
 }
 
-.Settings_toggle {
+.Settings__toggle {
 	position: relative;
 	display: inline-block;
 	width: 60px;
 	height: 34px;
 }
 
-.Settings_toggle input {
+.Settings__toggle input {
 	opacity: 0;
 	width: 0;
 	height: 0;
 }
 
-.Settings_toggleSlider {
+.Settings__toggleSlider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -92,7 +56,7 @@
 	border-radius: 34px;
 }
 
-.Settings_toggleSlider:before {
+.Settings__toggleSlider:before {
 	position: absolute;
 	content: '';
 	height: 26px;
@@ -105,23 +69,23 @@
 	border-radius: 50%;
 }
 
-input:checked + .Settings_toggleSlider {
+input:checked + .Settings__toggleSlider {
 	background-color: #2196f3;
 }
 
-input:focus + .Settings_toggleSlider {
+input:focus + .Settings__toggleSlider {
 	box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked + .Settings_toggleSlider--dark {
+input:checked + .Settings__toggleSlider--dark {
 	background-color: @darkOther;
 }
 
-input:focus + .Settings_toggleSlider--dark {
+input:focus + .Settings__toggleSlider--dark {
 	box-shadow: 0 0 1px @darkOther;
 }
 
-input:checked + .Settings_toggleSlider:before {
+input:checked + .Settings__toggleSlider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);

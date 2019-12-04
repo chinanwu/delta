@@ -1,0 +1,37 @@
+@import '../style/styles';
+
+.NavBar {
+	@nav();
+}
+
+.NavBar__btn {
+	@navBtn();
+}
+
+.NavBar__btn--dark {
+	@darkNavBtn();
+}
+
+.NavBar__btn:hover {
+	@navBtnHover();
+}
+
+.NavBar__btn--dark:hover {
+	@darkNavBtnHover();
+}
+
+.NavBar__btn:active {
+	@navBtnActive();
+}
+
+.NavBar__btn--dark:active {
+	@darkNavBtn();
+}
+
+.NavBar__btn--disabled {
+	@disabledNavBtn();
+}
+
+.NavBar__btn--disabled--dark {
+	@disabledDarkNavBtn();
+}

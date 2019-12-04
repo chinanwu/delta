@@ -55,15 +55,6 @@ export const Game = ({
 				sessionStorage.setItem(gameUrl + '-to', res.data.to);
 				socket.emit('room', { room: gameUrl });
 			}
-
-			socket.on('words change', data => {
-				console.log(data);
-				setFrom(data.from);
-				sessionStorage.setItem(gameUrl + '-from', data.from);
-				setEntries([data.from]);
-				setTo(data.to);
-				sessionStorage.setItem(gameUrl + '-to', data.to);
-			});
 		});
 	}, []);
 
@@ -73,6 +64,19 @@ export const Game = ({
 			socket.emit('win', { room: gameUrl });
 		}
 	}, [win]);
+
+	useEffect(() => {
+		const socket = io('http://127.0.0.1:5000');
+		socket.on('words:change', data => {
+			console.log(data);
+			setFrom(data.from);
+			sessionStorage.setItem(gameUrl + '-from', data.from);
+			setEntries([data.from]);
+
+			setTo(data.to);
+			sessionStorage.setItem(gameUrl + '-to', data.to);
+		});
+	}, [setFrom, setEntries, setTo]);
 
 	const handleChange = useCallback(
 		event => {
@@ -129,6 +133,7 @@ export const Game = ({
 	const handleNewClick = useCallback(() => {
 		getFetch('http://localhost:5000/api/games/' + gameUrl + '/new').then(
 			res => {
+				console.log(res);
 				const socket = io('http://127.0.0.1:5000');
 				const from = res.data.from;
 				const to = res.data.to;
@@ -141,7 +146,7 @@ export const Game = ({
 				sessionStorage.setItem(gameUrl + '-to', to);
 
 				setWin(false);
-				socket.emit('words change', { room: gameUrl, from: from, to: to });
+				socket.emit('words:change', { room: gameUrl, from: from, to: to });
 			}
 		);
 	}, [setFrom, setEntries, setTo, setWin]);
