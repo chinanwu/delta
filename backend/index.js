@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const db = require('./db');
+const socket = require('./socketio');
 
 const app = express();
 app.use(logger('dev'));
@@ -36,4 +37,8 @@ app.use(function(err, req, res, next) {
 });
 
 const PORT = process.env.PORT || 5000;
-createServer(app).listen(PORT);
+const server = createServer(app);
+
+socket(server);
+
+server.listen(PORT, () => console.log('Listening on port ' + PORT));

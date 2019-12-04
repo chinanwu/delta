@@ -6,6 +6,7 @@ const GameSchema = new Schema({
 	url: { type: String, unique: true },
 	from: String,
 	to: String,
+	// players: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('Game', GameSchema);

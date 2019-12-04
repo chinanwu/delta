@@ -75,8 +75,8 @@
 	position: absolute;
 	right: 12px;
 	top: 12px;
-	border: 1px solid black;
 	padding: 5px;
+	background-color: @disabledBtn;
 }
 
 .Game__new {
@@ -104,6 +104,12 @@
 .Game__newBtn:active {
 	background-color: @blackBtn;
 	box-shadow: @box-shadow-02;
+}
+
+.Game__content {
+	height: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 }
 
 .Game__solution {
@@ -186,6 +192,30 @@
 	border: none;
 	font-size: 18px;
 	cursor: pointer;
+}
+
+.Game__chat {
+	position: relative;
+	border: 1px solid black;
+	height: 60%;
+	margin-left: 18px;
+	margin-right: 18px;
+}
+
+.Game__messages {
+	display: flex;
+	flex-direction: column;
+	overflow: scroll;
+	height: calc(100% - 51px);
+	box-sizing: border-box;
+}
+
+.Game__chatNewMessage {
+	display: flex;
+}
+
+.Game__chatInput {
+	width: 100%;
 }
 
 .Game__win {
