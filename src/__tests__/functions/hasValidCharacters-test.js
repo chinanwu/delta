@@ -10,5 +10,6 @@ describe('hasValidCharacters function', () => {
 	it('returns true when input contains things other than letters', () => {
 		expect(hasValidCharacters('Test1')).toBeFalsy();
 		expect(hasValidCharacters('Test.')).toBeFalsy();
+		expect(hasValidCharacters('Test ')).toBeFalsy();
 	});
 });
