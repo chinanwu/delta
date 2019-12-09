@@ -32,12 +32,10 @@ export const Game = ({
 		const socket = io('http://127.0.0.1:5000');
 
 		document.title = 'Game - Mairead';
-		getFetch('http://localhost:5000/api/games/' + gameUrl).then(res => {
-			if (!res.success) {
-				postFetch(
-					'http://localhost:5000/api/games/new',
-					JSON.stringify({ url: gameUrl })
-				).then(res => {
+		getFetch('http://localhost:5000/api/games/getOrCreate/' + gameUrl).then(
+			res => {
+				if (res.success) {
+					console.log(res);
 					setFrom(res.data.from);
 					sessionStorage.setItem(gameUrl + '-from', res.data.from);
 					setEntries([res.data.from]);
@@ -45,17 +43,11 @@ export const Game = ({
 					setTo(res.data.to);
 					sessionStorage.setItem(gameUrl + '-to', res.data.to);
 					socket.emit('room', { room: gameUrl });
-				});
-			} else {
-				setFrom(res.data.from);
-				sessionStorage.setItem(gameUrl + '-from', res.data.from);
-				setEntries([res.data.from]);
-
-				setTo(res.data.to);
-				sessionStorage.setItem(gameUrl + '-to', res.data.to);
-				socket.emit('room', { room: gameUrl });
+				} else {
+					console.log(res.err);
+				}
 			}
-		});
+		);
 	}, []);
 
 	useEffect(() => {
