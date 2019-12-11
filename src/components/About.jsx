@@ -9,7 +9,7 @@ import NavBar from './NavBar.jsx';
 
 export const About = ({ dark }) => {
 	useEffect(() => {
-		document.title = 'About - Mairead';
+		document.title = `About - ${document.title}`;
 	}, []);
 
 	return (
