@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
 
-import { getFetch, postFetch } from '../functions/FetchFunctions';
+import { getFetch } from '../functions/FetchFunctions';
 import getThemeClassname from '../functions/getThemeClassname';
 import hasValidCharacters from '../functions/hasValidCharacters';
 import isOneOff from '../functions/isOneOff';
+import { applyGameUrl } from '../thunk/GameThunk.jsx';
 
 import './Game.less';
+import Chat from './Chat.jsx';
 
 const URL = 'http://127.0.0.1:5000';
 
@@ -18,6 +20,7 @@ export const Game = ({
 		params: { gameUrl },
 	},
 	dark,
+	onJoin,
 }) => {
 	const [from, setFrom] = useState(
 		sessionStorage.getItem(gameUrl + '-from') || null
@@ -33,7 +36,10 @@ export const Game = ({
 	useEffect(() => {
 		const socket = io(URL);
 
-		document.title = 'Game - Mairead';
+		document.title = `Game - ${document.title}`;
+
+		onJoin(gameUrl);
+
 		getFetch('/api/games/getOrCreate/' + gameUrl).then(res => {
 			if (res.success) {
 				console.log(res);
@@ -64,18 +70,6 @@ export const Game = ({
 		}
 	}, [win]);
 
-	// useEffect(() => {
-	// 	const socket = io(URL);
-	// 	socket.on('words:change', data => {
-	// 		setFrom(data.from);
-	// 		sessionStorage.setItem(gameUrl + '-from', data.from);
-	// 		setEntries([data.from]);
-	//
-	// 		setTo(data.to);
-	// 		sessionStorage.setItem(gameUrl + '-to', data.to);
-	// 	});
-	// }, [setFrom, setEntries, setTo]);
-
 	const handleChange = useCallback(
 		event => {
 			if (event && event.target) {
@@ -105,13 +99,7 @@ export const Game = ({
 	const handleClick = useCallback(() => {
 		getFetch('/api/words/validate?word=' + text).then(res => {
 			if (res && isOneOff(entries[entries.length - 1], text)) {
-				setEntries(entries => {
-					if (entries === []) {
-						return [text];
-					} else {
-						return [...entries, text];
-					}
-				});
+				setEntries(entries => (entries === [] ? [text] : [...entries, text]));
 				setText('');
 				setError(null);
 				text === to ? setWin(true) : setWin(false);
@@ -144,23 +132,6 @@ export const Game = ({
 			socket.emit('words:change', { room: gameUrl, from: from, to: to });
 		});
 	}, [setFrom, setEntries, setTo, setWin]);
-
-	const handleMessageChange = useCallback(
-		event => {
-			if (event && event.target) {
-				const value = event.target.value;
-				value ? setMessageText(value) : setMessageText('');
-			}
-		},
-		[setMessageText]
-	);
-
-	const handleMessageClick = useCallback(() => {
-		setMessages(messages => [...messages, messageText]);
-		setMessageText('');
-		const socket = io(URL);
-		socket.emit('message', { room: gameUrl, message: messageText });
-	}, [setMessages, setMessageText, messageText]);
 
 	return (
 		<div className={getThemeClassname('Game', dark)}>
@@ -229,22 +200,7 @@ export const Game = ({
 						x
 					</button>
 				</div>
-				<div className="Game__chat">
-					<div className="Game__messages">
-						{messages.map((message, index) => (
-							<div key={index}>{message}</div>
-						))}
-					</div>
-					<div className="Game__chatNewMessage">
-						<input
-							className="Game__chatInput"
-							type="text"
-							value={messageText}
-							onChange={handleMessageChange}
-						/>
-						<button onClick={handleMessageClick}>Submit</button>
-					</div>
-				</div>
+				<Chat />
 			</div>
 			<div className={win ? 'Game__win' : 'Game__win--hidden'}>You've won!</div>
 		</div>
@@ -254,10 +210,35 @@ export const Game = ({
 Game.propTypes = {
 	match: PropTypes.object,
 	dark: PropTypes.bool,
+	onJoin: PropTypes.func,
 };
 
 export const mapStateToProps = ({ theme }) => ({
 	dark: theme.dark,
 });
 
-export default connect(mapStateToProps)(Game);
+const mapDispatchToProps = {
+	onJoin: applyGameUrl,
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Game);
+
+//<div className="Game__chat">
+// 					<div className="Game__messages">
+// 						{messages.map((message, index) => (
+// 							<div key={index}>{message}</div>
+// 						))}
+// 					</div>
+// 					<div className="Game__chatNewMessage">
+// 						<input
+// 							className="Game__chatInput"
+// 							type="text"
+// 							value={messageText}
+// 							onChange={handleMessageChange}
+// 						/>
+// 						<button onClick={handleMessageClick}>Submit</button>
+// 					</div>
+// 				</div>

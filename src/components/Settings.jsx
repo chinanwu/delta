@@ -52,7 +52,7 @@ export const mapStateToProps = ({ theme }) => ({
 	dark: theme.dark,
 });
 
-export const mapDispatchToProps = {
+const mapDispatchToProps = {
 	onToggle: applyTheme,
 };
 

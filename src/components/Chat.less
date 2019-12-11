@@ -1,0 +1,38 @@
+@import '../style/styles';
+
+.Chat {
+	border: 1px solid black;
+	height: 100%;
+	position: relative;
+	margin-left: 18px;
+	margin-right: 18px;
+	margin-bottom: 18px;
+}
+
+.Chat__messages {
+	display: flex;
+	flex-direction: column;
+	overflow: scroll;
+	height: 90%;
+	box-sizing: border-box;
+}
+
+.Chat__inputBar {
+	border-top: 1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 10%;
+}
+
+.Chat__input {
+	margin-right: 6px;
+	margin-left: 12px;
+	font-size: 15px;
+}
+
+.Chat__inputBtn {
+	@greenBtn();
+	padding: 6px;
+	margin-right: 12px;
+}

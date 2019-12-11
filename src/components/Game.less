@@ -107,7 +107,7 @@
 }
 
 .Game__content {
-	height: 100%;
+	height: calc(100% - 183.75px - 18px);
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 }
@@ -173,8 +173,7 @@
 }
 
 .Game__submitBtn {
-	border: none;
-	background-color: @greenBtn;
+	@greenBtn();
 }
 
 .Game__submitBtn:hover {
@@ -202,25 +201,9 @@
 	margin-right: 18px;
 }
 
-.Game__messages {
-	display: flex;
-	flex-direction: column;
-	overflow: scroll;
-	height: calc(100% - 51px);
-	box-sizing: border-box;
-}
-
-.Game__chatNewMessage {
-	display: flex;
-}
-
-.Game__chatInput {
-	width: 100%;
-}
-
 .Game__win {
 	position: absolute;
-	color: @greenBtn;
+	color: @green;
 	font-size: 64px;
 	text-align: center;
 	top: 50%;
