@@ -11,6 +11,8 @@ import isOneOff from '../functions/isOneOff';
 
 import './Game.less';
 
+const URL = 'http://127.0.0.1:5000';
+
 export const Game = ({
 	match: {
 		params: { gameUrl },
@@ -29,38 +31,23 @@ export const Game = ({
 	const [messageText, setMessageText] = useState('');
 
 	useEffect(() => {
-		const socket = io('http://127.0.0.1:5000');
+		const socket = io(URL);
 
 		document.title = 'Game - Mairead';
-		getFetch('http://localhost:5000/api/games/getOrCreate/' + gameUrl).then(
-			res => {
-				if (res.success) {
-					console.log(res);
-					setFrom(res.data.from);
-					sessionStorage.setItem(gameUrl + '-from', res.data.from);
-					setEntries([res.data.from]);
+		getFetch('/api/games/getOrCreate/' + gameUrl).then(res => {
+			if (res.success) {
+				console.log(res);
+				setFrom(res.data.from);
+				sessionStorage.setItem(gameUrl + '-from', res.data.from);
+				setEntries([res.data.from]);
 
-					setTo(res.data.to);
-					sessionStorage.setItem(gameUrl + '-to', res.data.to);
-					socket.emit('room', { room: gameUrl });
-				} else {
-					console.log(res.err);
-				}
+				setTo(res.data.to);
+				sessionStorage.setItem(gameUrl + '-to', res.data.to);
+				socket.emit('room:join', { room: gameUrl });
 			}
-		);
-	}, []);
+		});
 
-	useEffect(() => {
-		if (win) {
-			const socket = io('http://127.0.0.1:5000');
-			socket.emit('win', { room: gameUrl });
-		}
-	}, [win]);
-
-	useEffect(() => {
-		const socket = io('http://127.0.0.1:5000');
 		socket.on('words:change', data => {
-			console.log(data);
 			setFrom(data.from);
 			sessionStorage.setItem(gameUrl + '-from', data.from);
 			setEntries([data.from]);
@@ -68,7 +55,26 @@ export const Game = ({
 			setTo(data.to);
 			sessionStorage.setItem(gameUrl + '-to', data.to);
 		});
-	}, [setFrom, setEntries, setTo]);
+	}, []);
+
+	useEffect(() => {
+		if (win) {
+			const socket = io(URL);
+			socket.emit('game:win', { room: gameUrl });
+		}
+	}, [win]);
+
+	// useEffect(() => {
+	// 	const socket = io(URL);
+	// 	socket.on('words:change', data => {
+	// 		setFrom(data.from);
+	// 		sessionStorage.setItem(gameUrl + '-from', data.from);
+	// 		setEntries([data.from]);
+	//
+	// 		setTo(data.to);
+	// 		sessionStorage.setItem(gameUrl + '-to', data.to);
+	// 	});
+	// }, [setFrom, setEntries, setTo]);
 
 	const handleChange = useCallback(
 		event => {
@@ -97,24 +103,22 @@ export const Game = ({
 	);
 
 	const handleClick = useCallback(() => {
-		getFetch('http://localhost:5000/api/words/validate?word=' + text).then(
-			res => {
-				if (res && isOneOff(entries[entries.length - 1], text)) {
-					setEntries(entries => {
-						if (entries === []) {
-							return [text];
-						} else {
-							return [...entries, text];
-						}
-					});
-					setText('');
-					setError(null);
-					text === to ? setWin(true) : setWin(false);
-				} else {
-					setError('Invalid word');
-				}
+		getFetch('/api/words/validate?word=' + text).then(res => {
+			if (res && isOneOff(entries[entries.length - 1], text)) {
+				setEntries(entries => {
+					if (entries === []) {
+						return [text];
+					} else {
+						return [...entries, text];
+					}
+				});
+				setText('');
+				setError(null);
+				text === to ? setWin(true) : setWin(false);
+			} else {
+				setError('Invalid word');
 			}
-		);
+		});
 	}, [setEntries, setText, setWin, text, error]);
 
 	const handleClearClick = useCallback(() => {
@@ -123,24 +127,22 @@ export const Game = ({
 	}, [setEntries, from]);
 
 	const handleNewClick = useCallback(() => {
-		getFetch('http://localhost:5000/api/games/' + gameUrl + '/new').then(
-			res => {
-				console.log(res);
-				const socket = io('http://127.0.0.1:5000');
-				const from = res.data.from;
-				const to = res.data.to;
+		getFetch('/api/games/' + gameUrl + '/new').then(res => {
+			console.log(res);
+			const socket = io(URL);
+			const from = res.data.from;
+			const to = res.data.to;
 
-				setFrom(from);
-				sessionStorage.setItem(gameUrl + '-from', from);
-				setEntries([from]);
+			setFrom(from);
+			sessionStorage.setItem(gameUrl + '-from', from);
+			setEntries([from]);
 
-				setTo(to);
-				sessionStorage.setItem(gameUrl + '-to', to);
+			setTo(to);
+			sessionStorage.setItem(gameUrl + '-to', to);
 
-				setWin(false);
-				socket.emit('words:change', { room: gameUrl, from: from, to: to });
-			}
-		);
+			setWin(false);
+			socket.emit('words:change', { room: gameUrl, from: from, to: to });
+		});
 	}, [setFrom, setEntries, setTo, setWin]);
 
 	const handleMessageChange = useCallback(
@@ -156,7 +158,7 @@ export const Game = ({
 	const handleMessageClick = useCallback(() => {
 		setMessages(messages => [...messages, messageText]);
 		setMessageText('');
-		const socket = io('http://127.0.0.1:5000');
+		const socket = io(URL);
 		socket.emit('message', { room: gameUrl, message: messageText });
 	}, [setMessages, setMessageText, messageText]);
 

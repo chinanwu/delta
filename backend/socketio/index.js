@@ -14,28 +14,24 @@ module.exports = server => {
 			console.log('user disconnected');
 		});
 
-		socket.on('room', data => {
+		socket.on('room:join', data => {
 			console.log('user joined room: ' + data.room);
 			socket.join(data.room);
 		});
 
-		socket.on('win', data => {
+		socket.on('game:win', data => {
 			console.log('user has won');
-			socket.broadcast.to(data.room).emit('someone has won', data);
+			socket.broadcast.to(data.room).emit('game:win', data);
 		});
 
 		socket.on('words:change', data => {
 			console.log('user has changed words');
-			socket.broadcast
-				.to(data.room)
-				.emit('someone has changed the words', data);
+			socket.broadcast.to(data.room).emit('words:change', data);
 		});
 
 		socket.on('message', data => {
 			console.log('user sent a message');
-			socket.broadcast
-				.to(data.room)
-				.emit('someone has changed the words', data);
+			socket.broadcast.to(data.room).emit('message', data);
 		});
 	});
 };
