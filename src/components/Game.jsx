@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
-import { enterBtn } from '../constants/Keycodes';
 
+import { enterBtn } from '../constants/Keycodes';
 import { getFetch } from '../functions/FetchFunctions';
 import getThemeClassname from '../functions/getThemeClassname';
 import hasValidCharacters from '../functions/hasValidCharacters';
@@ -13,6 +13,7 @@ import { applyGameUrl } from '../thunk/GameThunk.jsx';
 
 import './Game.less';
 import Chat from './Chat.jsx';
+import GameInput from './GameInput.jsx';
 
 const URL = 'http://127.0.0.1:5000';
 const socket = io(URL);
@@ -205,39 +206,15 @@ export const Game = ({
 				</button>
 			</div>
 			<div className="Game__content">
-				<div className="Game__solution">
-					<div className="Game__history">
-						{entries.map((entry, index) => (
-							<div className="Game__historyItem" key={entry + index}>
-								{entry}
-							</div>
-						))}
-					</div>
-					<div className="Game__entry">
-						<div className="Game__entryInputContainer">
-							<input
-								className={
-									'Game__entryInput' + (error ? ' Game__entryInput--error' : '')
-								}
-								type="text"
-								value={text}
-								maxLength={4}
-								onChange={handleChange}
-								onKeyDown={handleKeyDown}
-							/>
-							<button className="Game__submitBtn" onClick={handleClick}>
-								Submit
-							</button>
-						</div>
-					</div>
-					<button
-						className="Game__historyClear"
-						title="Clear history"
-						onClick={handleClearClick}
-					>
-						x
-					</button>
-				</div>
+				<GameInput
+					entries={entries}
+					text={text}
+					error={error}
+					onChange={handleChange}
+					onKeyDown={handleKeyDown}
+					onSubmit={handleClick}
+					onClear={handleClearClick}
+				/>
 				<Chat
 					messages={messages}
 					text={messageText}
@@ -269,3 +246,37 @@ export default connect(
 	mapStateToProps,
 	mapDispatchToProps
 )(Game);
+
+//<div className="Game__solution">
+// 					<div className="Game__history">
+// 						{entries.map((entry, index) => (
+// 							<div className="Game__historyItem" key={entry + index}>
+// 								{entry}
+// 							</div>
+// 						))}
+// 					</div>
+// 					<div className="Game__entry">
+// 						<div className="Game__entryInputContainer">
+// 							<input
+// 								className={
+// 									'Game__entryInput' + (error ? ' Game__entryInput--error' : '')
+// 								}
+// 								type="text"
+// 								value={text}
+// 								maxLength={4}
+// 								onChange={handleChange}
+// 								onKeyDown={handleKeyDown}
+// 							/>
+// 							<button className="Game__submitBtn" onClick={handleClick}>
+// 								Submit
+// 							</button>
+// 						</div>
+// 					</div>
+// 					<button
+// 						className="Game__historyClear"
+// 						title="Clear history"
+// 						onClick={handleClearClick}
+// 					>
+// 						x
+// 					</button>
+// 				</div>

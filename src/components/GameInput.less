@@ -1,0 +1,82 @@
+@import '../style/styles';
+
+.GameInput {
+	position: relative;
+	border: 1px solid black;
+	height: 60%;
+	margin-left: 18px;
+	margin-right: 18px;
+}
+
+.GameInput__history {
+	display: flex;
+	flex-direction: column;
+	overflow: scroll;
+	height: calc(100% - 51px);
+	box-sizing: border-box;
+}
+
+.GameInput__history:first-child {
+	margin-top: 6px;
+}
+
+.GameInput__historyItem {
+	margin-left: 6px;
+	font-size: 24px;
+}
+
+.GameInput__entry {
+	display: flex;
+	position: absolute;
+	bottom: 0;
+	justify-content: center;
+	width: 100%;
+	margin-bottom: 12px;
+	padding-top: 12px;
+	border-top: 1px solid black;
+}
+
+.GameInput__entryInputContainer {
+	display: flex;
+}
+
+.GameInput__entryInput {
+	border: none;
+	letter-spacing: 24px;
+	font-size: 24px;
+	background-image: url('./textbox.png'), url('./textbox.png'),
+		url('./textbox.png'), url('./textbox.png');
+	background-position: 0 top, 37px top, 74px top, 111px top;
+	background-size: contain;
+	background-repeat: no-repeat;
+	color: transparent;
+	text-shadow: 0 0 0 #000;
+	width: 160px;
+	cursor: pointer;
+}
+
+.GameInput__entryInput--error {
+	background-image: url('./textboxerror.png'), url('./textboxerror.png'),
+		url('./textboxerror.png'), url('./textboxerror.png');
+}
+
+.GameInput__submitBtn {
+	@greenBtn();
+}
+
+.GameInput__submitBtn:hover {
+	@greenBtnHover();
+}
+
+.GameInput__submitBtn:active {
+	@greenBtnActive();
+}
+
+.GameInput__historyClear {
+	position: absolute;
+	right: 0;
+	top: 0;
+	border: none;
+	font-size: 18px;
+	cursor: pointer;
+}
