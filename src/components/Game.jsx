@@ -37,9 +37,10 @@ export const Game = ({
 
 	useEffect(() => {
 		document.title = `Game - ${document.title}`;
-
 		onJoin(gameUrl);
+	}, []);
 
+	useEffect(() => {
 		getFetch('/api/games/getOrCreate/' + gameUrl).then(res => {
 			if (res.success) {
 				setFrom(res.data.from);
@@ -60,7 +61,7 @@ export const Game = ({
 			setTo(data.to);
 			sessionStorage.setItem(gameUrl + '-to', data.to);
 		});
-	}, [onJoin, setFrom, setEntries, setTo]);
+	}, [setFrom, setEntries, setTo]);
 
 	useEffect(() => {
 		socket.on('chat:message', data =>
@@ -155,8 +156,7 @@ export const Game = ({
 			) {
 				if (event.keyCode && event.keyCode === enterBtn) {
 					event.preventDefault();
-					// const socket = io(URL);
-					setMessages(messages => [...messages, messageText]);
+					setMessages(messages => [...messages, 'You: ' + messageText]);
 					setMessageText('');
 					socket.emit('chat:message', { room: gameUrl, message: messageText });
 				}
@@ -269,20 +269,3 @@ export default connect(
 	mapStateToProps,
 	mapDispatchToProps
 )(Game);
-
-//<div className="Game__chat">
-// 					<div className="Game__messages">
-// 						{messages.map((message, index) => (
-// 							<div key={index}>{message}</div>
-// 						))}
-// 					</div>
-// 					<div className="Game__chatNewMessage">
-// 						<input
-// 							className="Game__chatInput"
-// 							type="text"
-// 							value={messageText}
-// 							onChange={handleMessageChange}
-// 						/>
-// 						<button onClick={handleMessageClick}>Submit</button>
-// 					</div>
-// 				</div>
