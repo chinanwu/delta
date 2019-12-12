@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chat component rendering renders 1`] = `
+<div
+  className="Chat"
+>
+  <div
+    className="Chat__messages"
+  >
+    <div
+      className="Chat__message"
+    >
+      test
+    </div>
+  </div>
+  <div
+    className="Chat__inputBar"
+  >
+    <input
+      className="Chat__input"
+      id="chatInput"
+      type="text"
+    />
+    <button
+      className="Chat__inputBtn"
+      id="chatInputBtn"
+    >
+      Submit
+    </button>
+  </div>
+</div>
+`;
