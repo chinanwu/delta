@@ -166,7 +166,7 @@ export const Game = ({
 	);
 
 	const handleChatClick = useCallback(() => {
-		setMessages(messages => [...messages, messageText]);
+		setMessages(messages => [...messages, 'You: ' + messageText]);
 		setMessageText('');
 		socket.emit('chat:message', { room: gameUrl, message: messageText });
 	}, [setMessages, setMessageText, messageText]);
