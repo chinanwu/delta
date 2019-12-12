@@ -29,9 +29,9 @@ module.exports = server => {
 			socket.broadcast.to(data.room).emit('words:change', data);
 		});
 
-		socket.on('message', data => {
+		socket.on('chat:message', data => {
 			console.log('user sent a message');
-			socket.broadcast.to(data.room).emit('message', data);
+			socket.broadcast.to(data.room).emit('chat:message', data);
 		});
 	});
 };

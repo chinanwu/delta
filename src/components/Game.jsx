@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
+import { enterBtn } from '../constants/Keycodes';
 
 import { getFetch } from '../functions/FetchFunctions';
 import getThemeClassname from '../functions/getThemeClassname';
@@ -14,6 +15,7 @@ import './Game.less';
 import Chat from './Chat.jsx';
 
 const URL = 'http://127.0.0.1:5000';
+const socket = io(URL);
 
 export const Game = ({
 	match: {
@@ -34,15 +36,12 @@ export const Game = ({
 	const [messageText, setMessageText] = useState('');
 
 	useEffect(() => {
-		const socket = io(URL);
-
 		document.title = `Game - ${document.title}`;
 
 		onJoin(gameUrl);
 
 		getFetch('/api/games/getOrCreate/' + gameUrl).then(res => {
 			if (res.success) {
-				console.log(res);
 				setFrom(res.data.from);
 				sessionStorage.setItem(gameUrl + '-from', res.data.from);
 				setEntries([res.data.from]);
@@ -61,11 +60,16 @@ export const Game = ({
 			setTo(data.to);
 			sessionStorage.setItem(gameUrl + '-to', data.to);
 		});
-	}, []);
+	}, [onJoin, setFrom, setEntries, setTo]);
+
+	useEffect(() => {
+		socket.on('chat:message', data =>
+			setMessages(messages => [...messages, data.message])
+		);
+	}, [setMessages]);
 
 	useEffect(() => {
 		if (win) {
-			const socket = io(URL);
 			socket.emit('game:win', { room: gameUrl });
 		}
 	}, [win]);
@@ -116,8 +120,6 @@ export const Game = ({
 
 	const handleNewClick = useCallback(() => {
 		getFetch('/api/games/' + gameUrl + '/new').then(res => {
-			console.log(res);
-			const socket = io(URL);
 			const from = res.data.from;
 			const to = res.data.to;
 
@@ -132,6 +134,42 @@ export const Game = ({
 			socket.emit('words:change', { room: gameUrl, from: from, to: to });
 		});
 	}, [setFrom, setEntries, setTo, setWin]);
+
+	const handleChatChange = useCallback(
+		event => {
+			if (event && event.target) {
+				const value = event.target.value;
+				value ? setMessageText(value) : setMessageText('');
+			}
+		},
+		[setMessageText]
+	);
+
+	const handleChatKeyDown = useCallback(
+		event => {
+			if (
+				!event.shiftKey &&
+				!event.ctrlKey &&
+				!event.altKey &&
+				!event.metaKey
+			) {
+				if (event.keyCode && event.keyCode === enterBtn) {
+					event.preventDefault();
+					// const socket = io(URL);
+					setMessages(messages => [...messages, messageText]);
+					setMessageText('');
+					socket.emit('chat:message', { room: gameUrl, message: messageText });
+				}
+			}
+		},
+		[messageText]
+	);
+
+	const handleChatClick = useCallback(() => {
+		setMessages(messages => [...messages, messageText]);
+		setMessageText('');
+		socket.emit('chat:message', { room: gameUrl, message: messageText });
+	}, [setMessages, setMessageText, messageText]);
 
 	return (
 		<div className={getThemeClassname('Game', dark)}>
@@ -200,7 +238,13 @@ export const Game = ({
 						x
 					</button>
 				</div>
-				<Chat />
+				<Chat
+					messages={messages}
+					text={messageText}
+					onChange={handleChatChange}
+					onKeyDown={handleChatKeyDown}
+					onClick={handleChatClick}
+				/>
 			</div>
 			<div className={win ? 'Game__win' : 'Game__win--hidden'}>You've won!</div>
 		</div>

@@ -3,14 +3,14 @@ import { handleActions } from 'redux-actions';
 import { editGameUrl } from '../actions/GameActions';
 
 export const defaultState = {
-	game: null,
+	gameUrl: null,
 };
 
 export default handleActions(
 	{
 		[editGameUrl]: (state, { payload }) => ({
 			...state,
-			game: payload,
+			gameUrl: payload,
 		}),
 	},
 	defaultState

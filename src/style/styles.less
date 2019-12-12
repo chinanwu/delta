@@ -8,8 +8,8 @@
 // Colours
 
 @green: #8bc34a;
-@greenBtnHover: #9ccc65;
-@greenBtnActive: #7cb342;
+@greenHover: #9ccc65;
+@greenActive: #7cb342;
 @blackBtn: #212121;
 @blackBtn-light: #424242;
 @disabledBtn: #e0e0e0;
@@ -20,6 +20,17 @@
 @greenBtn: {
 	background-color: #8bc34a;
 	border: none;
+	cursor: pointer;
+};
+
+@greenBtnHover: {
+	background-color: @greenHover;
+	cursor: pointer;
+};
+
+@greenBtnActive: {
+	background-color: @greenActive;
+	cursor: pointer;
 };
 
 @nav: {
