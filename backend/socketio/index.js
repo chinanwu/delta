@@ -31,9 +31,7 @@ module.exports = server => {
 
 		socket.on('chat:message', data => {
 			console.log('user sent a message');
-			// const old = data.message;
-			data.message = 'Player ' + socket.id + ': ' + data.message;
-			console.log(data);
+			data.message = 'Player ' + data.name + ': ' + data.message;
 			socket.broadcast.to(data.room).emit('chat:message', data);
 		});
 	});

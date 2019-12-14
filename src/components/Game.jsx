@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -11,9 +12,10 @@ import hasValidCharacters from '../functions/hasValidCharacters';
 import isOneOff from '../functions/isOneOff';
 import { applyGameUrl } from '../thunk/GameThunk.jsx';
 
-import './Game.less';
 import Chat from './Chat.jsx';
 import GameInput from './GameInput.jsx';
+import Modal from './Modal.jsx';
+import './Game.less';
 
 const URL = 'http://127.0.0.1:5000';
 const socket = io(URL);
@@ -25,6 +27,8 @@ export const Game = ({
 	dark,
 	onJoin,
 }) => {
+	const [playerName, setPlayerName] = useState(null);
+	const [showModal, setShowModal] = useState(false);
 	const [from, setFrom] = useState(
 		sessionStorage.getItem(gameUrl + '-from') || null
 	);
@@ -39,7 +43,11 @@ export const Game = ({
 	useEffect(() => {
 		document.title = `Game - ${document.title}`;
 		onJoin(gameUrl);
-	}, []);
+	}, [onJoin]);
+
+	useEffect(() => {
+		socket.on('connect', () => (!playerName ? setPlayerName(socket.id) : null));
+	}, [playerName, setPlayerName]);
 
 	useEffect(() => {
 		getFetch('/api/games/getOrCreate/' + gameUrl).then(res => {
@@ -137,6 +145,8 @@ export const Game = ({
 		});
 	}, [setFrom, setEntries, setTo, setWin]);
 
+	const handleNameClick = useCallback(() => setShowModal(true), [setShowModal]);
+
 	const handleChatChange = useCallback(
 		event => {
 			if (event && event.target) {
@@ -159,18 +169,35 @@ export const Game = ({
 					event.preventDefault();
 					setMessages(messages => [...messages, 'You: ' + messageText]);
 					setMessageText('');
-					socket.emit('chat:message', { room: gameUrl, message: messageText });
+					socket.emit('chat:message', {
+						room: gameUrl,
+						message: messageText,
+						name: playerName,
+					});
 				}
 			}
 		},
-		[messageText]
+		[messageText, playerName]
 	);
 
 	const handleChatClick = useCallback(() => {
 		setMessages(messages => [...messages, 'You: ' + messageText]);
 		setMessageText('');
-		socket.emit('chat:message', { room: gameUrl, message: messageText });
-	}, [setMessages, setMessageText, messageText]);
+		socket.emit('chat:message', {
+			room: gameUrl,
+			message: messageText,
+			name: playerName,
+		});
+	}, [setMessages, setMessageText, messageText, playerName]);
+
+	const handleCloseModalClick = useCallback(() => {
+		setShowModal(false);
+	}, [setShowModal]);
+
+	const handleModalBtnClick = useCallback(
+		name => (console.log(name), setPlayerName(name), setShowModal(false)),
+		[setPlayerName, setShowModal]
+	);
 
 	return (
 		<div className={getThemeClassname('Game', dark)}>
@@ -200,9 +227,12 @@ export const Game = ({
 				<div>Seed:</div>
 				<div>{gameUrl}</div>
 			</div>
-			<div className="Game__new">
-				<button className="Game__newBtn" onClick={handleNewClick}>
+			<div className="Game__btns">
+				<button className="Game__btn" onClick={handleNewClick}>
 					New Game
+				</button>
+				<button className="Game__btn" onClick={handleNameClick}>
+					Change Name
 				</button>
 			</div>
 			<div className="Game__content">
@@ -224,6 +254,16 @@ export const Game = ({
 				/>
 			</div>
 			<div className={win ? 'Game__win' : 'Game__win--hidden'}>You've won!</div>
+			{showModal &&
+				createPortal(
+					<Modal
+						title="Change Player Name"
+						btnText="Submit"
+						onBtnClick={handleModalBtnClick}
+						onCloseModalClick={handleCloseModalClick}
+					/>,
+					document.body
+				)}
 		</div>
 	);
 };
@@ -234,8 +274,8 @@ Game.propTypes = {
 	onJoin: PropTypes.func,
 };
 
-export const mapStateToProps = ({ theme }) => ({
-	dark: theme.dark,
+export const mapStateToProps = ({ theme: { dark } }) => ({
+	dark,
 });
 
 const mapDispatchToProps = {
@@ -246,37 +286,3 @@ export default connect(
 	mapStateToProps,
 	mapDispatchToProps
 )(Game);
-
-//<div className="Game__solution">
-// 					<div className="Game__history">
-// 						{entries.map((entry, index) => (
-// 							<div className="Game__historyItem" key={entry + index}>
-// 								{entry}
-// 							</div>
-// 						))}
-// 					</div>
-// 					<div className="Game__entry">
-// 						<div className="Game__entryInputContainer">
-// 							<input
-// 								className={
-// 									'Game__entryInput' + (error ? ' Game__entryInput--error' : '')
-// 								}
-// 								type="text"
-// 								value={text}
-// 								maxLength={4}
-// 								onChange={handleChange}
-// 								onKeyDown={handleKeyDown}
-// 							/>
-// 							<button className="Game__submitBtn" onClick={handleClick}>
-// 								Submit
-// 							</button>
-// 						</div>
-// 					</div>
-// 					<button
-// 						className="Game__historyClear"
-// 						title="Clear history"
-// 						onClick={handleClearClick}
-// 					>
-// 						x
-// 					</button>
-// 				</div>
