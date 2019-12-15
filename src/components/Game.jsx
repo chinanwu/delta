@@ -195,7 +195,7 @@ export const Game = ({
 	}, [setShowModal]);
 
 	const handleModalBtnClick = useCallback(
-		name => (console.log(name), setPlayerName(name), setShowModal(false)),
+		name => (setPlayerName(name), setShowModal(false)),
 		[setPlayerName, setShowModal]
 	);
 

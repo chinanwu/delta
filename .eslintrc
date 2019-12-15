@@ -1,0 +1,9 @@
+{
+  "extends": ["@bluecateng/core", "@bluecateng/react"],
+  "rules": {
+    "no-unused-expressions": [
+      "error",
+      { "allowTernary": true}
+    ]
+  }
+}

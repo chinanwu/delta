@@ -13,6 +13,7 @@ module.exports = {
 		},
 		historyApiFallback: { disableDotRule: true },
 	},
+	resolve: { extensions: ['.js', '.jsx'] },
 	module: {
 		rules: [
 			{

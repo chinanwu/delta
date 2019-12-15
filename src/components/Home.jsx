@@ -9,7 +9,7 @@ import getThemeClassname from '../functions/getThemeClassname';
 import hasValidCharacters from '../functions/hasValidCharacters';
 
 import './Home.less';
-import NavBar from './NavBar.jsx';
+import NavBar from './NavBar';
 
 export const Home = ({ dark }) => {
 	const [gameUrl, setGameUrl] = useState(generateGameUrl);
@@ -44,16 +44,16 @@ export const Home = ({ dark }) => {
 					'http://localhost:5000/api/games/new',
 					JSON.stringify({ url: gameUrl })
 			  ).then(res => {
-					console.log('Creating game: ' + res.success);
+					console.log(`Creating game: ${res.success}`);
 					if (res.success) {
 						setRedirect(true);
 					}
 			  })
 			: null;
-	}, [error, setRedirect]);
+	}, [error, gameUrl]);
 
 	return redirect ? (
-		<Redirect to={'/game/' + gameUrl} />
+		<Redirect to={`/game/${gameUrl}`} />
 	) : (
 		<div className={getThemeClassname('Home', dark)}>
 			<NavBar activeTab="home" />
@@ -64,14 +64,15 @@ export const Home = ({ dark }) => {
 				<div className="Home__game">
 					<input
 						id="homeInput"
-						className={'Home__input' + (error ? ' Home__input--error' : '')}
+						className={`Home__input${error ? ' Home__input--error' : ''}`}
 						type="text"
 						name="gameUrl"
 						value={gameUrl}
 						onChange={handleChange}
 					/>
 					<button
-						className={'Home__btn' + (error ? ' Home__btn--error' : '')}
+						type="submit"
+						className={`Home__btn${error ? ' Home__btn--error' : ''}`}
 						disabled={!!error}
 						onClick={handleCreateClick}
 					>
@@ -84,7 +85,7 @@ export const Home = ({ dark }) => {
 				className={getThemeClassname('Home__footer', dark)}
 				aria-label="Footer"
 			>
-				Made with love by{' '}
+				Made by
 				<a href="https://www.github.com/chinanwu">Chin-An Wu</a>
 			</div>
 		</div>
@@ -95,8 +96,8 @@ Home.propTypes = {
 	dark: PropTypes.bool,
 };
 
-export const mapStateToProps = ({ theme }) => ({
-	dark: theme.dark,
+export const mapStateToProps = ({ theme: { dark } }) => ({
+	dark,
 });
 
 export default connect(mapStateToProps)(Home);

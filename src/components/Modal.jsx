@@ -2,8 +2,9 @@ import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 
-import './Modal.less';
 import { enterBtn } from '../constants/Keycodes';
+
+import './Modal.less';
 
 export const Modal = ({ title, btnText, onBtnClick, onCloseModalClick }) => {
 	const [text, setText] = useState('');
@@ -23,23 +24,27 @@ export const Modal = ({ title, btnText, onBtnClick, onCloseModalClick }) => {
 
 	const handleClick = useCallback(() => {
 		onBtnClick(text);
-	}, [onBtnClick]);
+	}, [onBtnClick, text]);
 
-	const handleKeyDown = useCallback(event => {
-		if (event && event.target) {
-			if (
-				!event.shiftKey &&
-				!event.ctrlKey &&
-				!event.altKey &&
-				!event.metaKey
-			) {
-				if (event.keyCode && event.keyCode === enterBtn) {
-					event.preventDefault();
-					onBtnClick(text);
+	const handleKeyDown = useCallback(
+		event => {
+			if (event && event.target) {
+				if (
+					!event.shiftKey &&
+					!event.ctrlKey &&
+					!event.altKey &&
+					!event.metaKey
+				) {
+					if (event.keyCode && event.keyCode === enterBtn) {
+						event.preventDefault();
+						console.log(text);
+						onBtnClick(text);
+					}
 				}
 			}
-		}
-	}, []);
+		},
+		[onBtnClick, text]
+	);
 
 	return (
 		<FocusTrap>
